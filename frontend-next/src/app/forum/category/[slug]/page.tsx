@@ -52,7 +52,7 @@ export default async function CategoryPage({ params }: PageProps) {
                     </div>
 
                     <div className="divide-y divide-white/5">
-                        {threads.length > 0 ? threads.map((thread) => (
+                        {threads.data.length > 0 ? threads.data.map((thread) => (
                             <div key={thread.id} className="grid grid-cols-12 gap-4 p-4 hover:bg-white/5 transition group items-center">
                                 <div className="col-span-12 md:col-span-7">
                                     <div className="flex items-start gap-3">
