@@ -23,17 +23,6 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/debug-session', function () {
-    return response()->json([
-        'session_domain' => config('session.domain'),
-        'session_driver' => config('session.driver'),
-        'session_secure' => config('session.secure'),
-        'session_same_site' => config('session.same_site'),
-        'sanctum_stateful' => config('sanctum.stateful'),
-        'app_url' => config('app.url'),
-    ]);
-});
-
 // Public routes (no auth required) - Throttled
 Route::middleware(['throttle:60,1'])->group(function () {
 
