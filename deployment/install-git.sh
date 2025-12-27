@@ -29,6 +29,7 @@ if [ -d "$APP_DIR/.git" ]; then
     git pull origin main
 else
     echo "📥 Cloning repository..."
+    cd /var/www  # Move OUT of the directory before deleting
     rm -rf $APP_DIR
     git clone "$REPO_URL" $APP_DIR
     cd $APP_DIR

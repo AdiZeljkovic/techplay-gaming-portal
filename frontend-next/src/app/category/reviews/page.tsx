@@ -181,7 +181,7 @@ export default async function ReviewsHubPage() {
                         </div>
                     ) : (
                         <EmptyState
-                            icon={AlertCircle}
+                            icon={<AlertCircle className="w-8 h-8 text-gray-400" />}
                             title="No reviews found"
                             description="Check back later for the latest reviews."
                         />
