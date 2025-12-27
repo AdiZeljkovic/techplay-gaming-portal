@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     description: 'Watch the latest game trailers, reviews, and gameplay features.',
 };
 
-export const revalidate = 60;
+export const dynamic = 'force-dynamic'; // Prevent static prerendering
 
 export default async function VideoPage() {
     const videosSource = await videoService.getVideos(1);

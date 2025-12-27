@@ -5,6 +5,8 @@ import { FeaturedCarousel } from '@/components/home/FeaturedCarousel';
 import { HomeListItem } from '@/components/home/HomeListItem';
 import Sidebar from '@/components/common/Sidebar';
 
+export const dynamic = 'force-dynamic'; // Prevent static prerendering
+
 async function getHomeData() {
   try {
     const [featured, latest, mostRead, videos, guidesData, forumThreads] = await Promise.all([
