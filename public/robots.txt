@@ -1,0 +1,21 @@
+# TechPlay.gg - Gaming Portal
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://techplay.gg/sitemap.xml
+Sitemap: https://techplay.gg/feed
+
+# Disallow admin and API routes
+Disallow: /admin
+Disallow: /api
+Disallow: /sanctum
+Disallow: /login
+Disallow: /register
+Disallow: /forgot-password
+Disallow: /reset-password
+
+# Disallow development/debug files
+Disallow: /*.php$
+Disallow: /storage/
+Disallow: /vendor/
