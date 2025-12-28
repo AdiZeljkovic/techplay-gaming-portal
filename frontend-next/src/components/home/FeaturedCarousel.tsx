@@ -4,8 +4,9 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronRight, ChevronLeft } from 'lucide-react';
+import { ChevronRight, ChevronLeft, Play, Pause } from 'lucide-react';
 import { Post } from '@/lib/types';
+import { Button } from '../UI';
 
 interface FeaturedCarouselProps {
     items: Post[];
@@ -30,108 +31,133 @@ export function FeaturedCarousel({ items }: FeaturedCarouselProps) {
 
     if (slides.length === 0) {
         return (
-            <div className="relative h-[700px] w-full overflow-hidden bg-[#0b1120] flex items-center justify-center">
-                <div className="text-center z-10">
-                    <h1 className="text-4xl font-black text-gray-700 mb-4">No Featured Content</h1>
+            <div className="relative h-[600px] md:h-[700px] w-full overflow-hidden bg-[#0b1120] flex items-center justify-center">
+                <div className="relative z-10 text-center p-8 glass-dark rounded-2xl border border-white/10 shadow-2xl mx-4">
+                    <h1 className="text-3xl md:text-4xl font-black text-gray-200 mb-2">No Featured Content</h1>
                     <p className="text-gray-500">Check back later for top stories.</p>
                 </div>
                 {/* Background Pattern */}
-                <div className="absolute inset-0 z-[1] bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 pointer-events-none mix-blend-overlay" />
+                <div className="absolute inset-0 z-[1] bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 pointer-events-none mix-blend-overlay" />
             </div>
         );
     }
 
     const activeSlide = slides[currentIndex];
 
+    // Card animation variants
     const cardVariants = {
-        active: { scale: 1.1, opacity: 1, zIndex: 10, y: -10 },
-        inactive: { scale: 0.95, opacity: 0.5, zIndex: 1, y: 0 }
+        active: { scale: 1.05, opacity: 1, y: 0, boxShadow: "0 20px 50px -10px rgba(0,0,0,0.5)" },
+        inactive: { scale: 0.95, opacity: 0.5, y: 10, boxShadow: "none" }
     };
 
     return (
         <div
-            className="relative h-[700px] w-full overflow-hidden bg-[#0b1120] flex flex-col justify-center group"
+            className="relative h-[600px] md:h-[700px] w-full overflow-hidden bg-[#0b1120] flex flex-col justify-center group/carousel"
             onMouseEnter={() => setIsPaused(true)}
             onMouseLeave={() => setIsPaused(false)}
         >
-            {/* Dynamic Background Layer */}
+            {/* 1. Cinematic Background Layer */}
             <AnimatePresence mode="wait">
                 <motion.div
                     key={activeSlide.id}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
+                    initial={{ opacity: 0, scale: 1.1 }}
+                    animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0 }}
-                    transition={{ duration: 1 }}
+                    transition={{ duration: 0.8, ease: "easeOut" }}
                     className="absolute inset-0 z-0"
                 >
                     <Image
                         src={activeSlide.image}
                         alt=""
                         fill
-                        className="object-cover blur-2xl scale-125 opacity-30 saturate-150"
+                        className="object-cover blur-2xl opacity-40 saturate-150"
                         priority
                         unoptimized={activeSlide.image?.includes('localhost') || activeSlide.image?.includes('127.0.0.1')}
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#0b1120] via-[#0b1120]/40 to-[#0b1120]/30" />
+                    {/* complex gradient overlay for depth */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#0b1120] via-[#0b1120]/80 to-transparent" />
                     <div className="absolute inset-0 bg-gradient-to-r from-[#0b1120] via-[#0b1120]/60 to-transparent" />
-                    <div className="absolute inset-0 bg-black/20" />
+                    <div className="absolute inset-0 bg-black/20 mix-blend-multiply" />
                 </motion.div>
             </AnimatePresence>
 
-            {/* Background Pattern */}
-            <div className="absolute inset-0 z-[1] bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 pointer-events-none mix-blend-overlay" />
+            {/* Background Noise Texture */}
+            <div className="absolute inset-0 z-[1] bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 pointer-events-none mix-blend-overlay" />
 
-            {/* Content Container */}
-            <div className="container mx-auto px-4 relative z-10 flex flex-col h-full justify-center md:justify-end pb-12 md:pb-20 pt-32">
-                {/* Active Slide Info */}
-                <div className="mb-12 max-w-4xl pl-2">
-                    <motion.div
-                        key={activeSlide.id + "-text"}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5, delay: 0.1 }}
-                    >
-                        <Link href={`/post/${activeSlide.slug}`} className="block group/title">
-                            <h1 className="text-4xl md:text-6xl font-black text-white font-manrope leading-[1.1] mb-6 group-hover/title:text-transparent group-hover/title:bg-clip-text group-hover/title:bg-gradient-to-r group-hover/title:from-white group-hover/title:to-gray-400 transition-all duration-300 drop-shadow-2xl line-clamp-3">
-                                {activeSlide.title}
-                            </h1>
-                        </Link>
+            {/* 2. Main Content Container */}
+            <div className="container mx-auto px-4 relative z-10 flex flex-col h-full justify-center md:justify-end pb-12 md:pb-20 pt-24">
 
-                        <p className="text-gray-300 text-lg md:text-xl line-clamp-2 max-w-2xl mb-8 font-medium leading-relaxed drop-shadow-lg">
-                            {activeSlide.excerpt}
-                        </p>
-
-                        <div className="flex items-center gap-6">
-                            <Link
-                                href={`/post/${activeSlide.slug}`}
-                                className="px-8 py-4 bg-white text-black font-black uppercase tracking-widest rounded-lg text-sm hover:bg-red-500 hover:text-white transition-all duration-300 flex items-center gap-2 shadow-xl hover:shadow-red-500/50 hover:scale-105"
-                            >
-                                Read Article <ChevronRight size={16} strokeWidth={3} />
+                {/* Text Content */}
+                <div className="mb-0 md:mb-12 max-w-4xl pl-2 relative">
+                    <AnimatePresence mode="wait">
+                        <motion.div
+                            key={activeSlide.id + "-text"}
+                            initial={{ opacity: 0, x: -20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            exit={{ opacity: 0, x: 20 }}
+                            transition={{ duration: 0.4 }}
+                            className="bg-gradient-to-r from-transparent via-black/10 to-transparent md:bg-none p-4 md:p-0 rounded-xl md:rounded-none backdrop-blur-sm md:backdrop-blur-none"
+                        >
+                            <Link href={`/post/${activeSlide.slug}`} className="block group/title">
+                                <h1 className="text-3xl md:text-5xl lg:text-7xl font-black text-white font-manrope leading-[1.1] mb-4 md:mb-6 group-hover/title:text-transparent group-hover/title:bg-clip-text group-hover/title:bg-gradient-to-r group-hover/title:from-white group-hover/title:to-gray-400 transition-all duration-300 drop-shadow-2xl md:line-clamp-3 line-clamp-4 tracking-tight">
+                                    {activeSlide.title}
+                                </h1>
                             </Link>
-                        </div>
-                    </motion.div>
+
+                            <p className="hidden md:block text-gray-300 text-lg md:text-xl line-clamp-2 max-w-2xl mb-8 font-medium leading-relaxed drop-shadow-md">
+                                {activeSlide.excerpt}
+                            </p>
+
+                            <div className="flex items-center gap-6 mt-4 md:mt-0">
+                                <Link href={`/post/${activeSlide.slug}`}>
+                                    <Button variant="primary" size="lg" className="shadow-2xl shadow-red-600/20 group-hover/carousel:shadow-red-600/40">
+                                        Read Article <ChevronRight size={18} strokeWidth={3} />
+                                    </Button>
+                                </Link>
+
+                                {/* Progress Bar / Timer Indicator */}
+                                {!isPaused && (
+                                    <div className="h-1 bg-white/10 w-24 rounded-full overflow-hidden">
+                                        <motion.div
+                                            key={currentIndex}
+                                            initial={{ width: "0%" }}
+                                            animate={{ width: "100%" }}
+                                            transition={{ duration: 6, ease: "linear" }}
+                                            className="h-full bg-white/50"
+                                        />
+                                    </div>
+                                )}
+                            </div>
+                        </motion.div>
+                    </AnimatePresence>
                 </div>
 
-                {/* Carousel Cards */}
-                <div className="relative w-full pl-2">
-                    {/* Navigation Buttons */}
+                {/* 3. Carousel Cards / Navigation */}
+                <div className="relative w-full pl-2 mt-8 md:mt-0 hidden md:block">
+                    {/* Navigation Controls */}
                     <div className="absolute -top-16 right-0 flex gap-2">
                         <button
+                            onClick={() => setIsPaused(!isPaused)}
+                            className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-white/50 hover:bg-white/10 hover:text-white transition-all mr-2"
+                        >
+                            {isPaused ? <Play size={16} fill="currentColor" /> : <Pause size={16} fill="currentColor" />}
+                        </button>
+                        <button
                             onClick={prevSlide}
-                            className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center text-white hover:bg-white hover:text-black transition-all"
+                            className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center text-white hover:bg-white hover:text-black hover:border-white transition-all active:scale-95"
                         >
                             <ChevronLeft size={20} />
                         </button>
                         <button
                             onClick={nextSlide}
-                            className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center text-white hover:bg-white hover:text-black transition-all"
+                            className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center text-white hover:bg-white hover:text-black hover:border-white transition-all active:scale-95"
                         >
                             <ChevronRight size={20} />
                         </button>
                     </div>
 
-                    {/* Cards Row */}
-                    <div className="flex gap-4 overflow-visible pb-4 pt-4">
+                    {/* Thumbnails Row */}
+                    <div className="flex gap-4 overflow-x-auto pb-4 pt-4 scrollbar-hide mask-fade-right">
                         {slides.map((slide, index) => {
                             const isActive = index === currentIndex;
                             return (
@@ -141,34 +167,30 @@ export function FeaturedCarousel({ items }: FeaturedCarouselProps) {
                                     onClick={() => setCurrentIndex(index)}
                                     variants={cardVariants}
                                     animate={isActive ? 'active' : 'inactive'}
-                                    className={`relative flex-shrink-0 w-[160px] md:w-[200px] aspect-[3/4] rounded-xl overflow-hidden cursor-pointer shadow-2xl relative ${isActive ? 'ring-2 ring-red-500/50 shadow-red-500/20' : ''}`}
+                                    whileHover={{ y: -5, opacity: 1 }}
+                                    className={`relative flex-shrink-0 w-[160px] md:w-[200px] aspect-[3/4] rounded-xl overflow-hidden cursor-pointer shadow-xl border border-white/5 transition-colors duration-300 ${isActive ? 'ring-2 ring-red-500/80' : 'hover:border-white/20'}`}
                                 >
-                                    <Link href={`/post/${slide.slug}`} className="block w-full h-full">
-                                        <Image
-                                            src={slide.image}
-                                            alt={slide.title}
-                                            fill
-                                            className="object-cover"
-                                            unoptimized={slide.image?.includes('localhost') || slide.image?.includes('127.0.0.1')}
-                                        />
-                                    </Link>
+                                    <Image
+                                        src={slide.image}
+                                        alt={slide.title}
+                                        fill
+                                        className="object-cover"
+                                        sizes="(max-width: 768px) 160px, 200px"
+                                        unoptimized={slide.image?.includes('localhost') || slide.image?.includes('127.0.0.1')}
+                                    />
                                     <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent pointer-events-none" />
 
                                     {/* Card Content */}
                                     <div className="absolute bottom-0 left-0 p-4 w-full pointer-events-none">
-                                        {isActive && (
-                                            <motion.div
-                                                initial={{ width: "0%" }}
-                                                animate={{ width: "100%" }}
-                                                transition={{ duration: 6, ease: "linear", repeat: 0 }}
-                                                key={currentIndex}
-                                                className="h-0.5 w-full bg-red-500 mb-3 shadow-[0_0_10px_#ef4444]"
-                                            />
-                                        )}
-                                        <p className={`font-bold leading-tight text-sm line-clamp-3 ${isActive ? 'text-white' : 'text-gray-400'}`}>
+                                        <p className={`font-bold leading-tight text-sm line-clamp-3 transition-colors duration-300 ${isActive ? 'text-white' : 'text-gray-400'}`}>
                                             {slide.title}
                                         </p>
                                     </div>
+
+                                    {/* Active Indicator Overlay */}
+                                    {isActive && (
+                                        <div className="absolute top-2 right-2 w-2 h-2 rounded-full bg-red-500 shadow-[0_0_8px_#ef4444] animate-pulse" />
+                                    )}
                                 </motion.div>
                             );
                         })}
