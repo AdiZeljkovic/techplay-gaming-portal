@@ -62,10 +62,10 @@ export default async function GuidesPage({ searchParams }: { searchParams: { cat
             <PageHero
                 iconName="PenTool"
                 iconColor="text-green-400"
-                title="Guides & "
-                titleAccent="Walkthroughs"
+                title="The "
+                titleAccent="Guide Hub"
                 accentGradient="from-green-400 to-emerald-600"
-                description="Everything you need to know to master your favorite games."
+                description="Expert walkthroughs, builds, and tips for mastering your games."
             />
 
             {/* Featured Categories (Dynamic) */}
