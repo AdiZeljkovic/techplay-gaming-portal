@@ -4,6 +4,7 @@ import { ChevronRight, Flame, Star, Cpu, PlayCircle, BookOpen, Play } from 'luci
 import { FeaturedCarousel } from '@/components/home/FeaturedCarousel';
 import { HomeListItem } from '@/components/home/HomeListItem';
 import Sidebar from '@/components/common/Sidebar';
+import { SpotlightCard } from '@/components/UI';
 
 export const dynamic = 'force-dynamic'; // Prevent static prerendering
 
@@ -105,8 +106,7 @@ export default async function HomePage() {
                 All Reviews <ChevronRight size={12} />
               </Link>
             </div>
-            <div className="relative p-6 sm:p-8 rounded-3xl overflow-hidden bg-[var(--bg-surface-2)] border border-[var(--border-subtle)]">
-              <div className="absolute top-0 right-0 w-96 h-96 bg-yellow-500/5 rounded-full blur-[100px] pointer-events-none" />
+            <SpotlightCard className="relative p-6 sm:p-8 rounded-3xl overflow-hidden bg-[var(--bg-surface-2)] border border-[var(--border-subtle)]" spotlightColor="rgba(234, 179, 8, 0.15)">
               <div className="relative z-10">
                 {latestReviews.length > 0 ? latestReviews.map(post => (
                   <HomeListItem key={post.id} post={{ ...post, rating: post.rating || 8.5 }} accentColor="text-yellow-400" showRating={true} />
@@ -114,7 +114,7 @@ export default async function HomePage() {
                   <div className="text-center py-10 text-gray-500">No recent reviews</div>
                 )}
               </div>
-            </div>
+            </SpotlightCard>
           </section>
 
           {/* 3. HARDWARE LAB (Tech) */}

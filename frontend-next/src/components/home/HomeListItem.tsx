@@ -4,6 +4,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Clock, User, MessageCircle, Play, ChevronRight } from 'lucide-react';
 import { Post } from '@/lib/types';
+import { SpotlightCard } from '@/components/UI';
+
 
 interface HomeListItemProps {
     post: Post;
@@ -21,7 +23,10 @@ export function HomeListItem({ post, accentColor = 'text-red-500', showRating = 
     };
 
     return (
-        <article className={`flex flex-col ${compact ? 'md:flex-row' : 'md:flex-row'} gap-6 group glass-dark p-4 rounded-2xl border border-white/5 hover:bg-white/5 hover:border-white/10 transition-all mb-6 relative overflow-hidden`}>
+        <SpotlightCard
+            className={`flex flex-col ${compact ? 'md:flex-row' : 'md:flex-row'} gap-6 group p-4 border-white/5 hover:border-white/10 transition-all mb-6`}
+            spotlightColor={accentColor === 'text-red-500' ? 'rgba(220, 38, 38, 0.15)' : accentColor === 'text-blue-400' ? 'rgba(59, 130, 246, 0.15)' : 'rgba(255, 255, 255, 0.1)'}
+        >
             {/* Image Section */}
             <div className={`w-full ${compact ? 'md:w-[240px]' : 'md:w-[280px] lg:w-[320px]'} aspect-video ${compact ? 'md:aspect-video' : 'md:aspect-[16/10]'} shrink-0 relative rounded-xl overflow-hidden`}>
                 <Image
@@ -59,7 +64,7 @@ export function HomeListItem({ post, accentColor = 'text-red-500', showRating = 
             </div>
 
             {/* Content Section */}
-            <div className="flex-1 flex flex-col pt-1 relative">
+            <div className="flex-1 flex flex-col pt-1 relative z-10">
                 <div className="flex items-center gap-2 mb-2">
                     <div className="flex items-center gap-2">
                         <span className={`${getBadgeColor()} text-white text-[10px] py-0.5 px-2 rounded-full font-bold uppercase`}>
@@ -98,6 +103,6 @@ export function HomeListItem({ post, accentColor = 'text-red-500', showRating = 
                     </Link>
                 </div>
             </div>
-        </article>
+        </SpotlightCard>
     );
 }

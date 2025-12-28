@@ -28,7 +28,18 @@ export function FeaturedCarousel({ items }: FeaturedCarouselProps) {
     const nextSlide = () => setCurrentIndex((prev) => (prev + 1) % slides.length);
     const prevSlide = () => setCurrentIndex((prev) => (prev - 1 + slides.length) % slides.length);
 
-    if (slides.length === 0) return null;
+    if (slides.length === 0) {
+        return (
+            <div className="relative h-[700px] w-full overflow-hidden bg-[#0b1120] flex items-center justify-center">
+                <div className="text-center z-10">
+                    <h1 className="text-4xl font-black text-gray-700 mb-4">No Featured Content</h1>
+                    <p className="text-gray-500">Check back later for top stories.</p>
+                </div>
+                {/* Background Pattern */}
+                <div className="absolute inset-0 z-[1] bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 pointer-events-none mix-blend-overlay" />
+            </div>
+        );
+    }
 
     const activeSlide = slides[currentIndex];
 
