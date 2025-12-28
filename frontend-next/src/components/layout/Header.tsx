@@ -151,10 +151,10 @@ export const Header = () => {
 
 
 
-                            <button onClick={toggleCart} className="relative flex items-center gap-1 hover:text-tech-red transition-colors">
-                                <ShoppingCart size={12} />
+                            <button onClick={toggleCart} className="relative flex items-center justify-center w-8 h-8 rounded-full bg-white/5 hover:bg-red-500 hover:text-white transition-all duration-300 group">
+                                <ShoppingCart size={14} className="group-hover:scale-110 transition-transform" />
                                 {itemCount > 0 && (
-                                    <span className="absolute -top-1.5 -right-1.5 w-4 h-4 bg-tech-red text-white text-[8px] font-black rounded-full flex items-center justify-center">
+                                    <span className="absolute -top-1 -right-1 w-3.5 h-3.5 bg-white text-red-600 text-[9px] font-black rounded-full flex items-center justify-center shadow-sm">
                                         {itemCount}
                                     </span>
                                 )}
@@ -177,8 +177,12 @@ export const Header = () => {
                                     </button>
                                 </div>
                             ) : (
-                                <button onClick={openLogin} className="flex items-center gap-2 px-3 py-1.5 bg-white/5 hover:bg-tech-red/20 border border-white/10 hover:border-tech-red/50 rounded transition-all">
-                                    <User size={12} /> <span>Sign In / Register</span>
+                                <button onClick={openLogin} className="group relative px-4 py-1.5 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 transition-all duration-300 overflow-hidden">
+                                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
+                                    <div className="flex items-center gap-2">
+                                        <User size={12} className="text-gray-400 group-hover:text-red-400 transition-colors" />
+                                        <span className="text-gray-300 group-hover:text-white font-bold tracking-wide transition-colors">Sign In <span className="text-gray-600 text-[10px] mx-0.5">/</span> Register</span>
+                                    </div>
                                 </button>
                             )}
                         </div>
@@ -191,11 +195,14 @@ export const Header = () => {
                     <div className="container mx-auto px-4 relative z-10">
                         <div className="flex items-center justify-between gap-8">
 
-                            {/* Logo - Clean red square */}
                             <Link href="/" className="flex items-center gap-3 group shrink-0">
-                                <div className={`bg-[#dc2626] flex items-center justify-center rounded-lg group-hover:scale-105 transition-transform duration-300 ${scrolled ? 'w-9 h-9' : 'w-11 h-11'}`}>
+                                <motion.div
+                                    whileHover={{ rotate: 15, scale: 1.1 }}
+                                    transition={{ type: "spring", stiffness: 300 }}
+                                    className={`bg-[#dc2626] flex items-center justify-center rounded-lg ${scrolled ? 'w-9 h-9' : 'w-11 h-11'}`}
+                                >
                                     <Gamepad2 className="text-white" size={scrolled ? 18 : 22} />
-                                </div>
+                                </motion.div>
                                 <div className="flex flex-col justify-center">
                                     <span className={`font-black tracking-tighter leading-none text-white transition-all ${scrolled ? 'text-xl' : 'text-2xl'}`}>
                                         TECH<span className="text-[#ef4444]">PLAY</span>
@@ -219,7 +226,7 @@ export const Header = () => {
                                             href={link.path}
                                             prefetch={true}
                                             className={`px-3 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 flex items-center gap-1 border border-transparent
-                                ${pathname?.includes(link.path) ? 'text-white bg-white/10 border-[var(--border-subtle)] shadow-sm' : 'text-gray-400 hover:text-white hover:bg-white/5'}
+                                ${pathname?.includes(link.path) ? 'text-white bg-white/10 border-[var(--border-subtle)] shadow-sm' : 'text-gray-400 hover:text-[#ef4444] hover:bg-white/5'}
                              `}
                                         >
                                             {link.name}

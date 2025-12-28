@@ -70,9 +70,20 @@ export function GlobalSearch() {
     }, [query]);
 
     return (
-        <div className={`relative transition-all duration-300 ${isFocused ? 'w-64 md:w-80' : 'w-48 md:w-64'}`}>
-            <div className={`flex items-center bg-white/5 border transition-all duration-300 rounded-full overflow-hidden ${isFocused ? 'border-red-600 bg-white/10 shadow-[0_0_20px_rgba(220,38,38,0.4)]' : 'border-white/10 hover:border-white/20'}`}>
-                <Search className={`ml-4 w-4 h-4 ${isFocused ? 'text-red-500' : 'text-gray-500'}`} />
+
+        <motion.div
+            className="relative z-50"
+            initial={false}
+            animate={{ width: isFocused ? 320 : 220 }}
+            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+        >
+            <div
+                className={`flex items-center transition-all duration-300 rounded-full overflow-hidden border ${isFocused
+                    ? 'bg-black/80 border-red-500/50 shadow-[0_0_15px_rgba(220,38,38,0.3)]'
+                    : 'bg-white/5 border-white/10 hover:border-white/20 hover:bg-white/10'
+                    }`}
+            >
+                <Search className={`ml-4 w-4 h-4 transition-colors duration-300 ${isFocused ? 'text-red-500' : 'text-gray-400'}`} />
                 <input
                     type="text"
                     placeholder="Search..."
@@ -91,34 +102,52 @@ export function GlobalSearch() {
                         initial={{ opacity: 0, y: 10, scale: 0.95 }}
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, scale: 0.95 }}
-                        className="absolute top-full right-0 w-[350px] bg-[#1a202c] border border-white/10 rounded-xl shadow-2xl mt-4 overflow-hidden z-[200]"
+                        transition={{ duration: 0.2 }}
+                        className="absolute top-full right-0 w-[400px] bg-[#0f1219]/95 backdrop-blur-xl border border-white/10 rounded-xl shadow-2xl mt-4 overflow-hidden"
                     >
                         <div className="p-2">
-                            <h5 className="px-4 py-2 text-[10px] font-black uppercase tracking-widest text-gray-500">Results</h5>
+                            <div className="flex items-center justify-between px-4 py-2 border-b border-white/5 mb-2">
+                                <h5 className="text-[10px] font-black uppercase tracking-widest text-gray-500">Results</h5>
+                                <span className="text-[9px] text-gray-600 font-mono">{results.length} found</span>
+                            </div>
+
                             {results.length === 0 && !loading && (
-                                <div className="px-4 py-2 text-sm text-gray-400">No results found.</div>
-                            )}
-                            {results.map((item) => (
-                                <Link
-                                    key={item.id}
-                                    href={item.link}
-                                    className="flex items-center gap-3 p-2 hover:bg-white/5 rounded-lg transition-colors group/item"
-                                >
-                                    {item.image && (
-                                        <div className="relative w-12 h-12 rounded-md overflow-hidden shadow-sm shrink-0">
-                                            <Image src={item.image} alt="" fill className="object-cover" />
-                                        </div>
-                                    )}
-                                    <div className="flex-1 min-w-0">
-                                        <h4 className="font-bold text-xs text-white truncate group-hover/item:text-red-500">{item.title}</h4>
-                                        <span className="text-xs text-gray-500">{item.type}</span>
+                                <div className="px-4 py-8 text-center">
+                                    <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center mx-auto mb-3">
+                                        <Search className="text-gray-600 opacity-50" size={20} />
                                     </div>
-                                </Link>
-                            ))}
+                                    <p className="text-sm text-gray-400 font-medium">No results found</p>
+                                    <p className="text-xs text-gray-600 mt-1">Try searching for something else</p>
+                                </div>
+                            )}
+
+                            <div className="max-h-[60vh] overflow-y-auto custom-scrollbar space-y-1">
+                                {results.map((item) => (
+                                    <Link
+                                        key={item.id}
+                                        href={item.link}
+                                        className="flex items-center gap-3 p-2 hover:bg-white/5 hover:border-l-2 hover:border-red-500 border-l-2 border-transparent transition-all group/item rounded-r-lg"
+                                    >
+                                        {item.image ? (
+                                            <div className="relative w-10 h-10 rounded overflow-hidden shrink-0 border border-white/10 group-hover/item:border-red-500/30 transition-colors">
+                                                <Image src={item.image} alt="" fill className="object-cover" />
+                                            </div>
+                                        ) : (
+                                            <div className="w-10 h-10 rounded bg-white/5 flex items-center justify-center shrink-0">
+                                                <div className="w-2 h-2 rounded-full bg-gray-700 group-hover/item:bg-red-500 transition-colors" />
+                                            </div>
+                                        )}
+                                        <div className="flex-1 min-w-0">
+                                            <h4 className="font-bold text-xs text-gray-200 truncate group-hover/item:text-red-400 transition-colors">{item.title}</h4>
+                                            <span className="text-[10px] text-gray-500 uppercase tracking-wider">{item.type}</span>
+                                        </div>
+                                    </Link>
+                                ))}
+                            </div>
                         </div>
                     </motion.div>
                 )}
             </AnimatePresence>
-        </div>
+        </motion.div>
     );
 }
