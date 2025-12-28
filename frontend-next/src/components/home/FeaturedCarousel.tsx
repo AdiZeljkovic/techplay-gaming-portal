@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronRight, ChevronLeft, Play, Pause } from 'lucide-react';
+import { ChevronRight, ChevronLeft } from 'lucide-react';
 import { Post } from '@/lib/types';
 import { Button } from '../UI';
 
@@ -132,29 +132,8 @@ export function FeaturedCarousel({ items }: FeaturedCarouselProps) {
                     </AnimatePresence>
                 </div>
 
-                {/* 3. Carousel Cards / Navigation */}
+                {/* 3. Carousel Cards / Thumbnails */}
                 <div className="relative w-full pl-2 mt-8 md:mt-0 hidden md:block">
-                    {/* Navigation Controls */}
-                    <div className="absolute -top-16 right-0 flex gap-2">
-                        <button
-                            onClick={() => setIsPaused(!isPaused)}
-                            className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-white/50 hover:bg-white/10 hover:text-white transition-all mr-2"
-                        >
-                            {isPaused ? <Play size={16} fill="currentColor" /> : <Pause size={16} fill="currentColor" />}
-                        </button>
-                        <button
-                            onClick={prevSlide}
-                            className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center text-white hover:bg-white hover:text-black hover:border-white transition-all active:scale-95"
-                        >
-                            <ChevronLeft size={20} />
-                        </button>
-                        <button
-                            onClick={nextSlide}
-                            className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center text-white hover:bg-white hover:text-black hover:border-white transition-all active:scale-95"
-                        >
-                            <ChevronRight size={20} />
-                        </button>
-                    </div>
 
                     {/* Thumbnails Row */}
                     <div className="flex gap-4 overflow-x-auto pb-4 pt-4 scrollbar-hide mask-fade-right">
@@ -186,11 +165,6 @@ export function FeaturedCarousel({ items }: FeaturedCarouselProps) {
                                             {slide.title}
                                         </p>
                                     </div>
-
-                                    {/* Active Indicator Overlay */}
-                                    {isActive && (
-                                        <div className="absolute top-2 right-2 w-2 h-2 rounded-full bg-red-500 shadow-[0_0_8px_#ef4444] animate-pulse" />
-                                    )}
                                 </motion.div>
                             );
                         })}
