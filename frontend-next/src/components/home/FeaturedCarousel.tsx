@@ -99,18 +99,14 @@ export function FeaturedCarousel({ items }: FeaturedCarouselProps) {
                             className="bg-gradient-to-r from-transparent via-black/10 to-transparent md:bg-none p-4 md:p-0 rounded-xl md:rounded-none backdrop-blur-sm md:backdrop-blur-none"
                         >
                             <Link href={`/post/${activeSlide.slug}`} className="block group/title">
-                                <h1 className="text-3xl md:text-5xl lg:text-7xl font-black text-white font-manrope leading-[1.1] mb-4 md:mb-6 group-hover/title:text-transparent group-hover/title:bg-clip-text group-hover/title:bg-gradient-to-r group-hover/title:from-white group-hover/title:to-gray-400 transition-all duration-300 drop-shadow-2xl md:line-clamp-3 line-clamp-4 tracking-tight">
+                                <h1 className="text-3xl md:text-5xl lg:text-7xl font-black text-white font-manrope leading-[1.1] mb-4 md:mb-8 group-hover/title:text-transparent group-hover/title:bg-clip-text group-hover/title:bg-gradient-to-r group-hover/title:from-white group-hover/title:to-gray-400 transition-all duration-300 drop-shadow-2xl md:line-clamp-3 line-clamp-4 tracking-tight">
                                     {activeSlide.title}
                                 </h1>
                             </Link>
 
-                            <p className="hidden md:block text-gray-300 text-lg md:text-xl line-clamp-2 max-w-2xl mb-8 font-medium leading-relaxed drop-shadow-md">
-                                {activeSlide.excerpt}
-                            </p>
-
                             <div className="flex items-center gap-6 mt-4 md:mt-0">
                                 <Link href={`/post/${activeSlide.slug}`}>
-                                    <Button variant="primary" size="lg" className="shadow-2xl shadow-red-600/20 group-hover/carousel:shadow-red-600/40">
+                                    <Button variant="primary" size="lg" className="shadow-2xl shadow-red-600/20 group-hover/carousel:shadow-red-600/40 whitespace-nowrap px-8 min-w-max">
                                         Read Article <ChevronRight size={18} strokeWidth={3} />
                                     </Button>
                                 </Link>
