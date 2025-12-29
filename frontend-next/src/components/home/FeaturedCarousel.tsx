@@ -106,8 +106,10 @@ export function FeaturedCarousel({ items }: FeaturedCarouselProps) {
 
                             <div className="flex items-center gap-6 mt-4 md:mt-0">
                                 <Link href={`/post/${activeSlide.slug}`}>
-                                    <Button variant="primary" size="lg" className="shadow-2xl shadow-red-600/20 group-hover/carousel:shadow-red-600/40 whitespace-nowrap px-8 min-w-max">
-                                        Read Article <ChevronRight size={18} strokeWidth={3} />
+                                    <Button variant="primary" size="lg" className="shadow-2xl shadow-red-600/20 group-hover/carousel:shadow-red-600/40 px-8 min-w-max">
+                                        <span className="flex items-center gap-2 whitespace-nowrap">
+                                            Read Article <ChevronRight size={18} strokeWidth={3} />
+                                        </span>
                                     </Button>
                                 </Link>
 
