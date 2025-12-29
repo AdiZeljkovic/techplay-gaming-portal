@@ -15,10 +15,10 @@ async function getHomeData() {
       articleService.getLatest(),
       articleService.getMostRead(),
       articleService.getForumThreads(),
-      articleService.getArticles({ category: 'News', limit: 5 }),
-      articleService.getArticles({ category: 'Reviews', limit: 5 }), // Try 'Reviews' plural first
+      articleService.getArticles({ section: 'news', limit: 5 }),
+      articleService.getArticles({ section: 'reviews', limit: 5 }),
       articleService.getArticles({ category: 'Opinions', limit: 5 }),
-      articleService.getArticles({ category: 'Tech', limit: 5 })
+      articleService.getArticles({ section: 'tech', limit: 5 })
     ]);
 
     // Fallback logic using the larger 'latest' pool (30 items)
