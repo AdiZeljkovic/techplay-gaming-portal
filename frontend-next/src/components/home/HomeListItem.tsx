@@ -22,13 +22,16 @@ export function HomeListItem({ post, accentColor = 'text-red-500', showRating = 
         return 'bg-red-600';
     };
 
+    const accentBorder = accentColor.replace('text-', 'border-');
+    const badgeBg = getBadgeColor();
+
     return (
         <SpotlightCard
-            className={`flex flex-col ${compact ? 'md:flex-row' : 'md:flex-row'} gap-6 group p-4 border-white/5 hover:border-white/10 transition-all mb-6`}
+            className={`flex flex-col md:flex-row gap-0 md:gap-6 group bg-[var(--bg-card)] border border-white/5 hover:border-white/10 transition-all rounded-xl overflow-hidden mb-6`}
             spotlightColor={accentColor === 'text-red-500' ? 'rgba(220, 38, 38, 0.15)' : accentColor === 'text-blue-400' ? 'rgba(59, 130, 246, 0.15)' : 'rgba(255, 255, 255, 0.1)'}
         >
-            {/* Image Section */}
-            <div className={`w-full ${compact ? 'md:w-[240px]' : 'md:w-[280px] lg:w-[320px]'} aspect-video ${compact ? 'md:aspect-video' : 'md:aspect-[16/10]'} shrink-0 relative rounded-xl overflow-hidden`}>
+            {/* Image Section - Left Side */}
+            <div className="w-full md:w-[280px] lg:w-[320px] aspect-video md:aspect-[16/10] shrink-0 relative overflow-hidden">
                 <Image
                     src={post.image}
                     alt={post.title}
@@ -42,66 +45,60 @@ export function HomeListItem({ post, accentColor = 'text-red-500', showRating = 
 
                 {/* Rating Badge */}
                 {showRating && post.rating !== undefined && (
-                    <div className={`absolute bottom-2 right-2 w-8 h-8 ${Number(post.rating) >= 9 ? 'bg-yellow-500' : 'bg-green-500'} text-black rounded-md flex items-center justify-center font-black text-xs shadow-lg border border-white/20`}>
+                    <div className={`absolute bottom-2 right-2 w-8 h-8 ${Number(post.rating) >= 9 ? 'bg-yellow-500' : 'bg-green-500'} text-black rounded-md flex items-center justify-center font-black text-xs shadow-lg border border-white/20 z-10`}>
                         {post.rating}
                     </div>
                 )}
 
-                {/* Video Badge */}
+                {/* Category Badge (Mobile Only) */}
+                <div className="absolute top-2 right-2 md:hidden z-10">
+                    <span className={`${badgeBg} text-white text-[10px] py-1 px-2 rounded font-bold uppercase`}>
+                        {post.category?.toUpperCase()}
+                    </span>
+                </div>
+
+                {/* Comment Badge */}
+                <div className="absolute top-2 left-2 bg-white text-black text-[10px] font-extrabold px-2 py-1 rounded shadow-lg flex items-center gap-1 z-10">
+                    <MessageCircle size={10} className="fill-black" />
+                    {post.comments_count || 0}
+                </div>
+
+                {/* Video Icon Overlay */}
                 {post.category === 'Video' && (
-                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
                         <div className="w-10 h-10 bg-white/20 backdrop-blur rounded-full flex items-center justify-center">
                             <Play size={20} className="text-white ml-1" fill="currentColor" />
                         </div>
                     </div>
                 )}
-
-                {/* Comment Badge */}
-                <div className="absolute top-2 left-2 bg-white/90 backdrop-blur-sm text-black text-[10px] font-black px-2 py-1 rounded shadow-lg flex items-center gap-1 z-10">
-                    <MessageCircle size={10} className="fill-current" />
-                    {post.views % 20}
-                </div>
             </div>
 
-            {/* Content Section */}
-            <div className="flex-1 flex flex-col pt-1 relative z-10">
-                <div className="flex items-center gap-2 mb-2">
-                    <div className="flex items-center gap-2">
-                        <span className={`${getBadgeColor()} text-white text-[10px] py-0.5 px-2 rounded-full font-bold uppercase`}>
-                            {post.category?.toUpperCase() || 'NEWS'}
-                        </span>
-                        {post.subcategory && (
-                            <span className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">• {post.subcategory}</span>
-                        )}
-                    </div>
-                </div>
-
-                <Link href={`/post/${post.slug}`}>
-                    <h2 className={`${compact ? 'text-lg' : 'text-xl lg:text-2xl'} font-black text-white mb-2 leading-tight group-hover:text-red-500 transition-colors font-manrope line-clamp-2`}>
-                        {post.title}
-                    </h2>
-                </Link>
-
-                <div className="flex items-center gap-3 text-xs font-bold uppercase tracking-wide text-gray-500 mb-3">
-                    <span className={`${accentColor} flex items-center gap-1`}>
-                        <User size={12} /> {post.author.username}
-                    </span>
-                    <span className="w-1 h-1 rounded-full bg-gray-600" />
-                    <span className="flex items-center gap-1">
-                        <Clock size={12} /> {post.date}
-                    </span>
-                </div>
-
-                <p className="text-gray-400 text-sm leading-relaxed line-clamp-2 md:w-11/12">
-                    {post.excerpt}
-                </p>
-
-                {/* Mobile Read More */}
-                <div className="md:hidden mt-4 pt-4 border-t border-white/5">
-                    <Link href={`/post/${post.slug}`} className={`text-xs font-black uppercase tracking-widest ${accentColor} hover:underline flex items-center gap-1`}>
-                        Read More <ChevronRight size={12} />
+            {/* Content Section - Right Side */}
+            <div className="flex-1 flex flex-col justify-center py-4 px-4 md:px-0 md:pr-6 relative z-10">
+                {/* Title & Accent Bar */}
+                <div className={`border-l-[4px] ${accentBorder} pl-4 mb-3`}>
+                    <Link href={`/post/${post.slug}`}>
+                        <h2 className={`text-lg md:text-xl lg:text-2xl font-black text-white leading-tight group-hover:${accentColor} transition-colors font-manrope line-clamp-2`}>
+                            {post.title}
+                        </h2>
                     </Link>
                 </div>
+
+                {/* Metadata */}
+                <div className="flex items-center gap-2 pl-5 text-xs mb-3 font-medium">
+                    <span className={`${accentColor} font-bold uppercase tracking-wide flex items-center gap-1`}>
+                        <User size={12} /> {post.author.username}
+                    </span>
+                    <span className="text-gray-600">•</span>
+                    <span className="text-gray-500 flex items-center gap-1 uppercase tracking-wide">
+                        {post.date}
+                    </span>
+                </div>
+
+                {/* Excerpt */}
+                <p className="text-gray-400 text-sm leading-relaxed line-clamp-2 pl-5 md:w-11/12">
+                    {post.excerpt}
+                </p>
             </div>
         </SpotlightCard>
     );
