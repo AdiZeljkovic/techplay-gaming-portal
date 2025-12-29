@@ -19,6 +19,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        if (\Illuminate\Support\Facades\App::environment('production')) {
+            \Illuminate\Support\Facades\URL::forceScheme('https');
+        }
         \Illuminate\Support\Facades\Event::listen(
             \SocialiteProviders\Manager\SocialiteWasCalled::class,
             function ($event) {
