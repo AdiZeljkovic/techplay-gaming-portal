@@ -120,7 +120,7 @@ export const articleService = {
     },
 
     async getLatest(): Promise<Post[]> {
-        const response = await api.get('/articles?sort=-created_at&limit=5');
+        const response = await api.get('/articles?sort=-created_at&limit=30');
         return response.data.data.map(mapToPost);
     },
 

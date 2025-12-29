@@ -21,11 +21,29 @@ async function getHomeData() {
       articleService.getArticles({ category: 'Tech', limit: 5 })
     ]);
 
-    // Fallback logic if specific categories return empty (just in case)
-    const latestNews = newsData.length > 0 ? newsData : latest.filter(p => p.category === 'News').slice(0, 5);
-    const latestReviews = reviewsData.length > 0 ? reviewsData : latest.filter(p => p.category === 'Reviews' || p.category === 'Review').slice(0, 5);
-    const opinions = opinionsData.length > 0 ? opinionsData : latest.filter(p => p.category === 'Opinions' || p.tags?.includes('Opinion')).slice(0, 5);
-    const hardwareLab = techData.length > 0 ? techData : latest.filter(p => p.category === 'Tech' || p.category === 'Hardware').slice(0, 5);
+    // Fallback logic using the larger 'latest' pool (30 items)
+    // This ensures that even if the specific API call fails (e.g. wrong category name), 
+    // we can still populate the sections from the latest feed.
+    const latestNews = newsData.length > 0 ? newsData : latest.filter(p =>
+      p.section === 'news' ||
+      (!p.section && (!p.category || p.category.toLowerCase() === 'news' || p.category.toLowerCase() === 'gaming'))
+    ).slice(0, 5);
+
+    const latestReviews = reviewsData.length > 0 ? reviewsData : latest.filter(p =>
+      p.section === 'reviews' ||
+      (!p.section && (p.tags?.some(t => t.toLowerCase().includes('review')) || p.category?.toLowerCase().includes('review')))
+    ).slice(0, 5);
+
+    const opinions = opinionsData.length > 0 ? opinionsData : latest.filter(p =>
+      p.category?.toLowerCase() === 'opinions' ||
+      p.tags?.some(t => t.toLowerCase() === 'opinion')
+    ).slice(0, 5);
+
+    const hardwareLab = techData.length > 0 ? techData : latest.filter(p =>
+      p.section === 'tech' ||
+      p.category?.toLowerCase() === 'tech' ||
+      p.category?.toLowerCase() === 'hardware'
+    ).slice(0, 5);
 
     return {
       featured: featured.length > 0 ? featured : latest.slice(0, 5),

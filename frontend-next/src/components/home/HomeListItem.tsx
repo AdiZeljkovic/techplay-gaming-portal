@@ -86,9 +86,9 @@ export function HomeListItem({ post, accentColor = 'text-red-500', showRating = 
 
                 {/* Metadata */}
                 <div className="flex items-center gap-2 pl-5 text-xs mb-3 font-medium">
-                    <span className={`${accentColor} font-bold uppercase tracking-wide flex items-center gap-1`}>
+                    <Link href={`/profile/${post.author.username}`} className={`${accentColor} font-bold uppercase tracking-wide flex items-center gap-1 hover:underline`}>
                         <User size={12} /> {post.author.username}
-                    </span>
+                    </Link>
                     <span className="text-gray-600">•</span>
                     <span className="text-gray-500 flex items-center gap-1 uppercase tracking-wide">
                         {post.date}
