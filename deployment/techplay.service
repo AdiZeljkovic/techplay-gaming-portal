@@ -1,0 +1,26 @@
+[Unit]
+Description=TechPlay Octane Server
+After=network.target mysql.service redis-server.service
+
+[Service]
+# User/Group - verify these match your server user (e.g. root or www-data)
+User=root
+Group=root
+
+# Project Directory
+WorkingDirectory=/var/www/techplay
+
+# Command to start Octane
+ExecStart=/usr/bin/php artisan octane:start --server=swoole --host=0.0.0.0 --port=8000 --max-requests=500
+
+# Restart policy
+Restart=always
+RestartSec=5
+Environment=LARAVEL_OCTANE="1"
+
+# Logging (optional, defaults to syslog)
+StandardOutput=append:/var/www/techplay/storage/logs/octane-access.log
+StandardError=append:/var/www/techplay/storage/logs/octane-error.log
+
+[Install]
+WantedBy=multi-user.target
