@@ -20,6 +20,7 @@
         "laravel/fortify": "^1.32",
         "laravel/framework": "^11.0",
         "laravel/octane": "^2.13",
+        "laravel/pulse": "^1.4",
         "laravel/reverb": "^1.6",
         "laravel/sanctum": "^4.2",
         "laravel/scout": "^10.22",
